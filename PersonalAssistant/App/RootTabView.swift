@@ -15,6 +15,9 @@ struct RootTabView: View {
             )
             .tabItem { Label("Hoje", systemImage: "sun.max.fill") }
 
+            AssistantView(viewModel: AssistantViewModel(orchestrator: container.assistantOrchestrator))
+                .tabItem { Label("Assistente", systemImage: "bubble.left.and.bubble.right.fill") }
+
             FinancesView(
                 expenseRepository: container.expenseRepository,
                 installmentRepository: container.installmentRepository,
@@ -28,8 +31,11 @@ struct RootTabView: View {
             ShoppingListsView(viewModel: ShoppingListsViewModel(repository: container.shoppingListRepository))
                 .tabItem { Label("Listas", systemImage: "cart.fill") }
 
-            SettingsView()
-                .tabItem { Label("Ajustes", systemImage: "gearshape.fill") }
+            SettingsView(
+                keychainService: container.keychainService,
+                aiConfigurationStore: container.aiConfigurationStore
+            )
+            .tabItem { Label("Ajustes", systemImage: "gearshape.fill") }
         }
     }
 }

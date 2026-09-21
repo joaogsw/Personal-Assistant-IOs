@@ -7,3 +7,11 @@ xcuserdata/
 *.pbxuser
 *.perspectivev3
 .swiftpm/
+
+# Secrets — the app stores the Anthropic API key in the iOS Keychain only, never in a
+# file, but these are ignored defensively in case a local config file is ever added.
+.env
+.env.*
+*.secrets
+Secrets.plist
+Secrets.xcconfig

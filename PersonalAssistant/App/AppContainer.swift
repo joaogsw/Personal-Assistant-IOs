@@ -16,6 +16,10 @@ final class AppContainer {
     let reminderRepository: ReminderRepository
     let shoppingListRepository: ShoppingListRepository
 
+    let keychainService: KeychainServicing
+    let aiConfigurationStore: AIConfigurationStoring
+    let assistantOrchestrator: AssistantOrchestrator
+
     init(inMemory: Bool = false) {
         let schema = Schema([
             Expense.self,
@@ -43,5 +47,25 @@ final class AppContainer {
         taskRepository = SwiftDataTaskRepository(context: context)
         reminderRepository = SwiftDataReminderRepository(context: context)
         shoppingListRepository = SwiftDataShoppingListRepository(context: context)
+
+        let keychainService = KeychainService()
+        let aiConfigurationStore = AIConfigurationStore()
+        self.keychainService = keychainService
+        self.aiConfigurationStore = aiConfigurationStore
+
+        let aiProvider = AnthropicAIProvider(
+            keychainService: keychainService,
+            configurationStore: aiConfigurationStore
+        )
+
+        assistantOrchestrator = AssistantOrchestrator(
+            aiProvider: aiProvider,
+            expenseRepository: expenseRepository,
+            installmentRepository: installmentRepository,
+            recurringBillRepository: recurringBillRepository,
+            taskRepository: taskRepository,
+            reminderRepository: reminderRepository,
+            shoppingListRepository: shoppingListRepository
+        )
     }
 }
